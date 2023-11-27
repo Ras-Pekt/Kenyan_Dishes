@@ -3,8 +3,9 @@
 forms module
 """
 from flask_wtf import FlaskForm
+from models.user import User
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 
 
 class Register(FlaskForm):
@@ -15,7 +16,7 @@ class Register(FlaskForm):
         "Full Name",
         validators=[
             DataRequired(),
-            Length(min=5, max=20)
+            Length(min=5, max=50)
         ]
     )
 
@@ -44,6 +45,15 @@ class Register(FlaskForm):
     )
 
     submit = SubmitField("Register")
+
+
+    def validate_email(self, email):
+        """
+        checks if the email already exists in the database
+        """
+        existing_email = User.query.filter_by(email=email.data).first()
+        if existing_email:
+            raise ValidationError("This email already has an account associated with it")
 
 
 class LogIn(FlaskForm):
