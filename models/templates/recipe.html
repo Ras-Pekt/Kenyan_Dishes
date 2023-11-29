@@ -1,0 +1,25 @@
+{% extends "layout_template.html" %}
+{% block content %}
+	<article class="media content-section">
+		<div class="media-body">
+			<h2 class="article-title">{{ recipe.title }}</h2>
+
+			<div class="article-metadata">
+				Posted by <a class="mr-2" href="{{ url_for('user', user_id=recipe.user_id) }}">{{ recipe.user.fullname }}</a> on 
+				<small class="text-muted">{{ recipe.formatted_date }}</small>
+			</div>
+			
+			<p>
+				<h3>Ingredients</h3>
+				{% for item in recipe.ingredients %}
+					<li>{{ item }}</li>
+				{% endfor %}
+				<br>
+				<h3>Instructions</h3>
+				{% for step in recipe.instructions %}
+					<p>{{ step }}</p>
+				{% endfor %}
+			</p>
+		</div>
+	</article>
+{% endblock content %}

@@ -3,24 +3,12 @@
 	{% for post in posts %}
 	<article class="media content-section">
 		<div class="media-body">
-			<h2><a class="article-title" href="#">{{ post.title }}</a></h2>
+			<h2><a href="{{ url_for('recipe', recipe_id=post.id) }}">{{ post.title }}</a></h2>
 
 			<div class="article-metadata">
-				Posted by <a class="mr-2" href="#">{{ post.author }}</a> on 
-				<small class="text-muted">{{ post.date_posted }}</small>
+				Posted by <a class="mr-2" href="{{ url_for('user', user_id=post.user_id) }}">{{ post.user.fullname }}</a> on 
+				<small class="text-muted">{{ post.formatted_date }}</small>
 			</div>
-			
-			<p>
-				<h3>Ingredients</h3>
-				{% for item in post.ingredients %}
-					<li>{{ item }}</li>
-				{% endfor %}
-				<br>
-				<h3>Instructions</h3>
-				{% for step in post.method %}
-					<p>{{ step }}</p>
-				{% endfor %}
-			</p>
 		</div>
 	</article>
 	{% endfor %}

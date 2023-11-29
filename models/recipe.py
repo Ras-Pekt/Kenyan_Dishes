@@ -11,6 +11,10 @@ class Recipe(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
+    @property
+    def formatted_date(self):
+        return self.date_posted.strftime("%B %d, %Y")
+
     def __repr__(self):
         """remove this in final"""
-        return f"Recipe({self.id}: {self.title}, {self.date_posted})"
+        return f"Recipe({self.id}: {self.title}, {self.date_posted}, {self.instructions})"

@@ -4,7 +4,7 @@ forms module
 """
 from flask_wtf import FlaskForm
 from models.user import User
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, FieldList
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 
 
@@ -79,3 +79,29 @@ class LogIn(FlaskForm):
     remember = BooleanField("Remember Me")
 
     submit = SubmitField("Log In")
+
+
+class NewRecipe(FlaskForm):
+    """A new recipe class/form"""
+    title =  StringField(
+        "Recipe Name",
+        validators=[DataRequired()],
+    )
+
+    ingredients = FieldList(
+        StringField(
+            "Ingredient",
+            validators=[DataRequired()],
+        ),
+        min_entries=1,
+    )
+
+    instructions = FieldList(
+        StringField(
+            "Instruction",
+            validators=[DataRequired()],
+        ),
+        min_entries=1,
+    )
+
+    submit = SubmitField("Post New Recipe")

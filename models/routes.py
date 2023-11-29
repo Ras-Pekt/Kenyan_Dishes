@@ -3,28 +3,9 @@
 from flask import render_template, url_for, flash, redirect, request
 from flask_login import login_user, current_user, logout_user, login_required
 from models import app, db, bcrypt
-from models.forms import Register, LogIn
+from models.forms import Register, LogIn, NewRecipe
 from models.recipe import Recipe
 from models.user import User
-
-recipe_post = [
-    {
-        "author": "John Doe",
-        "title": "Chapo Beans",
-        "ingredients": ["chapo", "beans"],
-        "method": ["Make chapos", "cook beans", "serve while hot"],
-        "date_posted": "Nov 20, 2023",
-        "date_updated": "Nov 22, 2023",
-    },
-    {
-        "author": "Jane Doe",
-        "title": "Ugali Beef",
-        "ingredients": ["flour", "water", "beef", "onions", "tomatoes", "oil", "salt", "dhania"],
-        "method": ["Make ugali", "cook beef", "serve while hot"],
-        "date_posted": "Oct 20, 2023",
-        "date_updated": "Oct 22, 2023",
-    },
-]
 
 with app.app_context():
     db.create_all()
@@ -33,7 +14,8 @@ with app.app_context():
 @app.route("/home")
 def home():
     """handles the home route"""
-    return render_template("home_page.html", posts=recipe_post)
+    recipes = Recipe.query.all()
+    return render_template("home_page.html", posts=recipes)
 
 
 @app.route("/about")
@@ -100,4 +82,42 @@ def logout():
 @app.route("/account")
 @login_required
 def account():
-    return render_template("account.html", title="Account")
+    """route to display the current user's account"""
+    recipes = Recipe.query.filter_by(user=current_user).all()
+    return render_template("account.html", title="Account", posts=recipes)
+
+
+@app.route("/recipe/new", methods=["GET", "POST"])
+@login_required
+def new_recipe():
+    """route for creating a new recipe"""
+    form = NewRecipe()
+    title = form.title.data
+    ingredients = form.ingredients.data + request.form.getlist('ingredients[]')
+    instructions = form.instructions.data + request.form.getlist('instructions[]')
+
+    if form.validate_on_submit():
+        new_recipe = Recipe(title=title, ingredients=ingredients, instructions=instructions, user=current_user)
+        db.session.add(new_recipe)
+        db.session.commit()
+        flash(
+            "Your Recipe has been added successfully",
+            "success"
+        )
+        return redirect(url_for("account"))
+
+    return render_template("new_recipe.html", title="New Recipe", form=form)
+
+
+@app.route("/recipe/<int:recipe_id>")
+def recipe(recipe_id):
+    """route to return a single recipe"""
+    recipe = Recipe.query.get_or_404(recipe_id)
+    return render_template("recipe.html", title=recipe.title, recipe=recipe)
+
+
+@app.route("/user/<int:user_id>")
+def user(user_id):
+    """route to return a single user"""
+    user = User.query.get_or_404(user_id)
+    return render_template("user.html", title=user.fullname, user=user)
