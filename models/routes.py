@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """routes module"""
-from flask import render_template, url_for, flash, redirect, request
+from flask import render_template, url_for, flash, redirect, request, abort
 from flask_login import login_user, current_user, logout_user, login_required
 from models import app, db, bcrypt
 from models.forms import Register, LogIn, NewRecipe
@@ -106,7 +106,7 @@ def new_recipe():
         )
         return redirect(url_for("account"))
 
-    return render_template("new_recipe.html", title="New Recipe", form=form)
+    return render_template("new_recipe.html", title="New Recipe", form=form, legend="New Recipe")
 
 
 @app.route("/recipe/<int:recipe_id>")
@@ -121,3 +121,61 @@ def user(user_id):
     """route to return a single user"""
     user = User.query.get_or_404(user_id)
     return render_template("user.html", title=user.fullname, user=user)
+
+
+@app.route("/recipe/<int:recipe_id>/update", methods=["GET", "POST"])
+@login_required
+def update_recipe(recipe_id):
+    """route to update a single recipe"""
+    recipe = Recipe.query.get_or_404(recipe_id)
+
+    if recipe.user != current_user:
+        abort(403)
+
+    form = NewRecipe()
+
+    if form.validate_on_submit():
+        recipe.title = form.title.data
+        recipe.ingredients = form.ingredients.data + request.form.getlist('ingredients[]')
+        recipe.instructions = form.instructions.data + request.form.getlist('instructions[]')
+        db.session.commit()
+
+        flash(
+            "Recipe updated successfully",
+            "success"
+        )
+        return redirect(url_for("recipe", recipe_id=recipe.id))
+    elif request.method == "GET":
+        form.title.data = recipe.title
+
+        while len(form.ingredients.entries) < len(recipe.ingredients):
+            form.ingredients.append_entry()
+
+        for i, ingredient in enumerate(recipe.ingredients):
+            form.ingredients.entries[i].data = ingredient
+
+        while len(form.instructions.entries) < len(recipe.instructions):
+            form.instructions.append_entry()
+
+        for i, instruction in enumerate(recipe.instructions):
+            form.instructions.entries[i].data = instruction
+
+    return render_template("new_recipe.html", title="Update Recipe", form=form, legend="Update Recipe")
+
+
+@app.route("/recipe/<int:recipe_id>/delete", methods=["POST"])
+@login_required
+def delete_recipe(recipe_id):
+    """route to delete a single recipe"""
+    recipe = Recipe.query.get_or_404(recipe_id)
+
+    if recipe.user != current_user:
+        abort(403)
+
+    db.session.delete(recipe)
+    db.session.commit()
+    flash(
+            "Recipe deleted successfully",
+            "success"
+        )
+    return redirect(url_for("account"))
