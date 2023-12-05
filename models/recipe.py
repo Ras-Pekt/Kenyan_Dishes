@@ -2,9 +2,10 @@
 """recipe class/table"""
 from datetime import datetime
 from models import db
+import uuid
 
 class Recipe(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String, primary_key=True, default=str(uuid.uuid4()))
     title = db.Column(db.String(100), nullable=False)
     ingredients = db.Column(db.JSON, nullable=False)
     instructions = db.Column(db.JSON, nullable=False)

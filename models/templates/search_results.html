@@ -1,0 +1,19 @@
+{% extends "layout_template.html" %}
+{% block content %}
+	{% if recipes %}
+		{% for recipe in recipes %}
+		<article class="media content-section">
+			<div class="media-body">
+				<h2><a href="{{ url_for('recipe', recipe_id=recipe.id) }}">{{ recipe.title }}</a></h2>
+
+				<div class="article-metadata">
+					Posted by <a class="mr-2" href="{{ url_for('user', user_id=recipe.user_id) }}">{{ recipe.user.fullname }}</a> on 
+					<small class="text-muted">{{ recipe.formatted_date }}</small>
+				</div>
+			</div>
+		</article>
+		{% endfor %}
+	{% else %}
+		<p>No results found.</p>
+	{% endif %}
+{% endblock content %}

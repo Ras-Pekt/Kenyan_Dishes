@@ -36,12 +36,6 @@ def home():
     return render_template("home_page.html", posts=recipes)
 
 
-@app.route("/about")
-def about():
-    """handles the about route"""
-    return render_template("about_page.html", title="About")
-
-
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """register new user route"""
@@ -67,6 +61,9 @@ def register():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     """existing user log in route"""
+    if current_user.is_authenticated:
+        return redirect(url_for("home"))
+
     form = LogIn()
     email = form.email.data
     password = form.password.data
@@ -127,7 +124,7 @@ def new_recipe():
     return render_template("new_recipe.html", title="New Recipe", form=form, legend="New Recipe")
 
 
-@app.route("/recipe/<int:recipe_id>")
+@app.route("/recipe/<string:recipe_id>")
 def recipe(recipe_id):
     """route to return a single recipe"""
     recipe = Recipe.query.get_or_404(recipe_id)
@@ -141,7 +138,7 @@ def user(user_id):
     return render_template("user.html", title=user.fullname, user=user)
 
 
-@app.route("/recipe/<int:recipe_id>/update", methods=["GET", "POST"])
+@app.route("/recipe/<string:recipe_id>/update", methods=["GET", "POST"])
 @login_required
 def update_recipe(recipe_id):
     """route to update a single recipe"""
@@ -181,7 +178,7 @@ def update_recipe(recipe_id):
     return render_template("new_recipe.html", title="Update Recipe", form=form, legend="Update Recipe")
 
 
-@app.route("/recipe/<int:recipe_id>/delete", methods=["POST"])
+@app.route("/recipe/<string:recipe_id>/delete", methods=["POST"])
 @login_required
 def delete_recipe(recipe_id):
     """route to delete a single recipe"""
@@ -224,9 +221,10 @@ def reset_password(token):
         return redirect(url_for("home"))
     
     user = User.verify_token(token)
+    print(user)
     if not user:
         flash(
-            "That token is invalid or expired",
+            "That token is invalid or has expired",
             "warning"
         )
         return redirect(url_for("request_password_reset"))
@@ -244,3 +242,13 @@ def reset_password(token):
         return redirect(url_for("login"))
 
     return render_template("reset_password.html", title="Reset Password", form=form)
+
+
+@app.route("/search")
+def search():
+    search_term = request.args.get("search")
+
+    if search_term:
+        recipes = Recipe.query.filter(Recipe.title.like(f"%{search_term}%")).all()
+        return render_template("search_results.html", title="Search Results", recipes=recipes)
+    return redirect("home")
