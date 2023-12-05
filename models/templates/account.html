@@ -1,5 +1,6 @@
 {% extends "layout_template.html" %}
 {% block content %}
+{% if posts %}
 	{% for post in posts %}
 		<article class="media content-section">
 			<div class="media-body">
@@ -46,11 +47,20 @@
 					{% endfor %}
 					<br>
 					<h3>Instructions</h3>
-					{% for step in post.instructions %}
-						<p>{{ step }}</p>
-					{% endfor %}
+					<ol>
+						{% for step in post.instructions %}
+							{% if step %}
+								<li>{{ step }}</li>
+							{% endif %}
+						{% endfor %}
+					</ol>
 				</p>
 			</div>
 		</article>
 	{% endfor %}
+{% else %}
+	<p class="media content-section">
+		You have not posted any recipies <a href="{{ url_for('new_recipe') }}">Post a recipe</a>
+	</p>
+{% endif %}
 {% endblock content %}

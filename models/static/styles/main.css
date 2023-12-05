@@ -1,21 +1,25 @@
 body {
-	background: #fafafa;
+	background: #e5e5e9;
 	color: #333333;
 	margin-top: 5rem;
 }
 
 h1, h2, h3, h4, h5, h6, a {
 	/* color: #444444; */
-	color: #167607;
+	/* color: #167607; */
+	color: #0c3b2e;
+	
 }
 
 .bg-steel {
 	/* background-color: #5f788a; */
-	background-color: #167607;
+	/* background-color: #167607; */
+	background-color: #0c3b2e;
 }
 
 .site-header .navbar-nav .nav-link {
-	color: #cbd5db;
+	/* color: #cbd5db; */
+	color: #ECFFDC;;
 }
 
 .site-header .navbar-nav .nav-link:hover {
@@ -28,10 +32,10 @@ h1, h2, h3, h4, h5, h6, a {
 }
 
 .content-section {
-	background: #ffffff;
+	background: #fcfcf7;
 	padding: 10px 20px;
 	/* border: 1px solid #dddddd; */
-	border: 1px solid #167607;
+	border: 1px solid #0c3b2e;
 	border-radius: 3px;
 	margin-bottom: 20px;
 }
@@ -65,7 +69,7 @@ a:hover {
 	padding-bottom: 1px;
 	margin-bottom: 4px;
 	/* border-bottom: 1px solid #e3e3e3 */
-	border-bottom: 1px solid #167607;
+	border-bottom: 1px solid #0c3b2e;;
 }
 
 .article-metadata a:hover {
@@ -94,3 +98,26 @@ a:hover {
     padding: 2.5px 5px;
     font-size: 12px;
 }
+
+#carouselExample {
+    height: 400px; /* Set a fixed height for the carousel */
+  }
+
+.carousel-inner {
+    height: 100%; /* Make the carousel-inner fill the entire height of the carousel */
+  }
+
+.carousel-item {
+    height: 100%; /* Make the carousel items fill the entire height of the carousel-inner */
+  }
+
+.carousel-item img {
+    width: 100%; /* Make the images fill the entire width of the carousel items */
+    height: 100%; /* Make the images fill the entire height of the carousel items */
+    object-fit: cover; /* Ensure the entire image is covered without distortion */
+}
+
+.carousel-inner img {
+    height: 400px; /* Set the height to the desired value */
+    width: auto; /* Maintain the aspect ratio */
+ }

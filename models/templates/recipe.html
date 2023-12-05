@@ -46,9 +46,13 @@
 				{% endfor %}
 				<br>
 				<h3>Instructions</h3>
-				{% for step in recipe.instructions %}
-					<p>{{ step }}</p>
-				{% endfor %}
+				<ol>
+					{% for step in recipe.instructions %}
+						{% if step %}
+							<li>{{ step }}</li>
+						{% endif %}
+					{% endfor %}
+				</ol>
 			</p>
 		</div>
 	</article>

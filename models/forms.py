@@ -105,3 +105,43 @@ class NewRecipe(FlaskForm):
     )
 
     submit = SubmitField("Post New Recipe")
+
+
+class RequestPasswordReset(FlaskForm):
+    email = StringField(
+        "Email",
+        validators=[
+            DataRequired(),
+            Email()
+        ]
+    )
+
+    submit = SubmitField("Request Password Reset")
+
+    def validate_email(self, email):
+        """
+        checks if the email already exists in the database
+        """
+        existing_email = User.query.filter_by(email=email.data).first()
+        if existing_email is None:
+            raise ValidationError("This email is not associated with an account. Please register")
+
+
+class ResetPassword(FlaskForm):
+    password = PasswordField(
+        "Password",
+        validators=[
+            DataRequired(),
+            Length(min=6, max=50)
+        ]
+    )
+
+    confirm_password = PasswordField(
+        "Confirm Password",
+        validators=[
+            DataRequired(),
+            EqualTo("password")
+        ]
+    )
+
+    submit = SubmitField("Reset Password")
