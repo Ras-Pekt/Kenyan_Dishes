@@ -30,9 +30,11 @@ def create_app(config=Config):
     from models.users.user_routes import users
     from models.recipes.recipe_routes import recipes
     from models.main.routes import main
+    from models.errors.error_handler import errors
 
     app.register_blueprint(users)
     app.register_blueprint(recipes)
     app.register_blueprint(main)
+    app.register_blueprint(errors)
 
     return app
