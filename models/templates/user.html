@@ -8,7 +8,7 @@
 
 			{% for recipe in user.recipies %}
 				<div class="article-metadata">
-					<h3><a href="{{ url_for('recipe', recipe_id=recipe.id) }}">{{ recipe.title }}</a></h3>
+					<h3><a href="{{ url_for('recipes.recipe', recipe_id=recipe.id) }}">{{ recipe.title }}</a></h3>
 					Posted on <small class="text-muted">{{ recipe.formatted_date }}</small>
 				</div>
 			{% endfor %}

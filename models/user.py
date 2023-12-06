@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """user class/table"""
-from models import db, login_manager, app
+from models import db, login_manager
+from flask import current_app
 from flask_login import UserMixin
 from itsdangerous import URLSafeTimedSerializer as Serializer
 import uuid
@@ -21,12 +22,12 @@ class User(db.Model, UserMixin):
     recipies = db.relationship("Recipe", backref="user", lazy=True)
 
     def reset_token(self):
-        ser = Serializer(app.config["SECRET_KEY"])
+        ser = Serializer(current_app.config["SECRET_KEY"])
         return ser.dumps({"user_id": self.id})
 
     @staticmethod
     def verify_token(token):
-        ser = Serializer(app.config["SECRET_KEY"])
+        ser = Serializer(current_app.config["SECRET_KEY"])
         try:
             user_id = ser.loads(token)["user_id"]
             return User.query.get(user_id)

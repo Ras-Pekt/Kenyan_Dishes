@@ -1,18 +1,45 @@
 {% extends "layout_template.html" %}
 {% block content %}
 
-
-
-
-
+	{% if posts %}
+	<div id="carouselExample" class="carousel slide mb-4" data-bs-ride="carousel" data-interval="2000">
+		<div class="carousel-inner">
+			{% for i in range(len) %}
+				<div class="carousel-item {% if loop.index == 1 %} active {% endif %}">
+					<img src="{{ url_for('static', filename='images/food_' + i|string + '.jpg') }}" class="d-block w-100 full-height" alt="">
+					<div class="carousel-caption d-none d-md-block">
+						<article class="media content-section">
+							<div class="media-body">
+								<h5><a href="{{ url_for('recipes.recipe', recipe_id=posts[i].id) }}">{{ posts[i].title }}</a></h5>
+					
+								<div class="article-metadata">
+									Posted by <a class="mr-2" href="{{ url_for('users.user', user_id=posts[i].user_id) }}">{{ posts[i].user.fullname }}</a> on 
+									<small class="text-muted">{{ posts[i].formatted_date }}</small>
+								</div>
+							</div>
+						</article>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+		<button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			<span class="visually-hidden">Previous</span>
+		</button>
+		<button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+			<span class="carousel-control-next-icon" aria-hidden="true"></span>
+			<span class="visually-hidden">Next</span>
+		</button>
+	</div>
+	{% endif %}
 
 	{% for post in posts %}
 	<article class="media content-section">
 		<div class="media-body">
-			<h2><a href="{{ url_for('recipe', recipe_id=post.id) }}">{{ post.title }}</a></h2>
+			<h2><a href="{{ url_for('recipes.recipe', recipe_id=post.id) }}">{{ post.title }}</a></h2>
 
 			<div class="article-metadata">
-				Posted by <a class="mr-2" href="{{ url_for('user', user_id=post.user_id) }}">{{ post.user.fullname }}</a> on 
+				Posted by <a class="mr-2" href="{{ url_for('users.user', user_id=post.user_id) }}">{{ post.user.fullname }}</a> on 
 				<small class="text-muted">{{ post.formatted_date }}</small>
 			</div>
 		</div>

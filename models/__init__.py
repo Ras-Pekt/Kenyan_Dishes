@@ -1,34 +1,38 @@
 #!/usr/bin/python3
 """initialises the app"""
 
-from dotenv import load_dotenv
 from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
-from os import environ
+from models.config import Config
 
-load_dotenv()
-
-app = Flask(__name__)
-app.url_map.strict_slashes = False
-app.config["SECRET_KEY"] = environ.get("SECRET_KEY")
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///kenyan_dishes.db"
-db = SQLAlchemy(app)
-bcrypt = Bcrypt(app)
-login_manager = LoginManager(app)
-login_manager.login_view = "login"
+db = SQLAlchemy()
+bcrypt = Bcrypt()
+login_manager = LoginManager()
+login_manager.login_view = "users.login"
 login_manager.login_message_category = "info"
-
-app.config["MAIL_SERVER"] = "smtp.gmail.com"
-app.config["MAIL_PORT"] = 587
-app.config["MAIL_USE_TLS"] = True
-app.config["MAIL_USE_SSL"] = False
-app.config["MAIL_USERNAME"] = environ.get("MAIL_USERNAME")
-app.config["MAIL_PASSWORD"] = environ.get("MAIL_PASSWORD")
-
-mail = Mail(app)
+mail = Mail()
 
 
-from models import routes
+def create_app(config=Config):
+    """creates an instance of the app"""
+    app = Flask(__name__)
+    app.config.from_object(Config)
+    app.url_map.strict_slashes = False
+
+    db.init_app(app)
+    bcrypt.init_app(app)
+    login_manager.init_app(app)
+    mail.init_app(app)
+
+    from models.users.user_routes import users
+    from models.recipes.recipe_routes import recipes
+    from models.main.routes import main
+
+    app.register_blueprint(users)
+    app.register_blueprint(recipes)
+    app.register_blueprint(main)
+
+    return app
