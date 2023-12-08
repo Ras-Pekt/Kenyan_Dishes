@@ -2,10 +2,10 @@
 from flask import Blueprint, render_template, url_for, flash, redirect, request
 from flask_login import login_user, current_user, logout_user, login_required
 from models import db, bcrypt
-from models.users.user_forms import Register, LogIn, RequestPasswordReset, ResetPassword
+from models.users.user_forms import Register, LogIn, UpdateAccount, RequestPasswordReset, ResetPassword
 from models.recipe import Recipe
 from models.user import User
-from models.users.user_utils import send_password_reset_email
+from models.users.user_utils import send_password_reset_email, save_picture
 
 users = Blueprint("users", __name__)
 
@@ -67,12 +67,33 @@ def logout():
     return redirect (url_for("main.home"))
 
 
-@users.route("/account")
+@users.route("/account", methods=["GET", "POST"])
 @login_required
 def account():
     """route to display the current user's account"""
+    form = UpdateAccount()
+
+    if form.validate_on_submit():
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data, "profile_pics", (125, 125))
+            current_user.prof_pic = picture_file
+
+        current_user.email = form.email.data
+        db.session.commit()
+        flash(
+            "Your profile picture has been updated successfully",
+            "success"
+        )
+        return redirect(url_for("users.account"))
+    elif request.method == "GET":
+        form.email.data = current_user.email
+
+    profile_pic = url_for("static", filename=f"images/profile_pics/{current_user.prof_pic}")
     recipes = Recipe.query.order_by(Recipe.date_posted.desc()).filter_by(user=current_user).all()
-    return render_template("account.html", title="Account", posts=recipes)
+    return render_template(
+        "account.html", title="Account", posts=recipes,
+        profile_pic=profile_pic, form=form
+    )
 
 
 @users.route("/user/<string:user_id>")
@@ -107,7 +128,6 @@ def reset_password(token):
         return redirect(url_for("main.home"))
     
     user = User.verify_token(token)
-    print(user)
     if not user:
         flash(
             "That token is invalid or has expired",

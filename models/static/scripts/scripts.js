@@ -27,3 +27,19 @@ document.addEventListener('DOMContentLoaded', (event) => {
     document.getElementById('instructions-container').appendChild(newDiv);
   });
 });
+
+
+button = document.getElementById("searchButton")
+input = document.getElementById("searchBox")
+button.disabled = true;
+input.addEventListener("input", function() {
+  if (input.value.length > 0) {
+    button.disabled = false;
+  }
+});
+
+function showForm() {
+  document.getElementById('formContainer').style.display = 'block';
+  document.getElementById('buttonContainer').style.display = 'none';
+}
+

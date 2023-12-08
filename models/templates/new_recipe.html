@@ -1,7 +1,7 @@
 {% extends "layout_template.html" %}
 {% block content %}
 	<div class="content-section">
-		<form method="POST" action="">
+		<form method="POST" action="" enctype="multipart/form-data">
 			{{ form.hidden_tag() }}
 			<fieldset class="form-group">
 				<legend class="border-bottom mb-4">{{ legend }}</legend>
@@ -56,6 +56,15 @@
 					{% endif %}
 				</div>
 				<button class="btn btn-outline-info mt-2" type="button" id="add-instruction">Add Another Instruction</button>
+				<div class="form-group mt-2">
+					{{ form.picture.label()}} <br>
+					{{ form.picture(class="form-control-file custom-btn")}}
+					{% if form.picture.errors %}
+						{% for error in form.picture.errors %}
+							<span class="text-danger">{{ error }}</span> <br>
+						{% endfor %}
+					{% endif %}
+				</div>
 			</fieldset>
 			<div class="form-group mt-2">
 				{{ form.submit(class="btn btn-outline-info")}}

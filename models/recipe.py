@@ -4,9 +4,13 @@ from datetime import datetime
 from models import db
 import uuid
 
+def generate_id():
+    return str(uuid.uuid4())
+
 class Recipe(db.Model):
-    id = db.Column(db.String, primary_key=True, default=str(uuid.uuid4()))
+    id = db.Column(db.String, primary_key=True, default=generate_id)
     title = db.Column(db.String(100), nullable=False)
+    recipe_pic = db.Column(db.String(20))
     ingredients = db.Column(db.JSON, nullable=False)
     instructions = db.Column(db.JSON, nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -18,4 +22,4 @@ class Recipe(db.Model):
 
     def __repr__(self):
         """remove this in final"""
-        return f"Recipe({self.id}: {self.title}, {self.date_posted}, {self.instructions})"
+        return f"Recipe(ID:{self.id}\nTITLE:{self.title}\nDATE:{self.date_posted}\nINSTRUCTIONS{self.instructions}\nPIC{self.recipe_pic})"

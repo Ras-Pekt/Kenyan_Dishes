@@ -8,16 +8,7 @@
 				<div class="carousel-item {% if loop.index == 1 %} active {% endif %}">
 					<img src="{{ url_for('static', filename='images/food_' + i|string + '.jpg') }}" class="d-block w-100 full-height" alt="">
 					<div class="carousel-caption d-none d-md-block">
-						<article class="media content-section">
-							<div class="media-body">
-								<h5><a href="{{ url_for('recipes.recipe', recipe_id=posts[i].id) }}">{{ posts[i].title }}</a></h5>
-					
-								<div class="article-metadata">
-									Posted by <a class="mr-2" href="{{ url_for('users.user', user_id=posts[i].user_id) }}">{{ posts[i].user.fullname }}</a> on 
-									<small class="text-muted">{{ posts[i].formatted_date }}</small>
-								</div>
-							</div>
-						</article>
+						<h5><a href="{{ url_for('recipes.recipe', recipe_id=posts[i].id) }}">{{ posts[i].title }}</a></h5>					
 					</div>
 				</div>
 			{% endfor %}
@@ -37,6 +28,10 @@
 	<article class="media content-section">
 		<div class="media-body">
 			<h2><a href="{{ url_for('recipes.recipe', recipe_id=post.id) }}">{{ post.title }}</a></h2>
+			{% if post.recipe_pic %}
+				<img class="recipe-img" src="{{ url_for('static', filename='images/recipe_pics/' + post.recipe_pic) }}">
+			{% endif %}
+
 
 			<div class="article-metadata">
 				Posted by <a class="mr-2" href="{{ url_for('users.user', user_id=post.user_id) }}">{{ post.user.fullname }}</a> on 

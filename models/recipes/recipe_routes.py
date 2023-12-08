@@ -4,6 +4,7 @@ from flask_login import current_user, login_required
 from models import db
 from models.recipes.recipe_forms import NewRecipe
 from models.recipe import Recipe
+from models.users.user_utils import save_picture
 
 recipes = Blueprint("recipes", __name__)
 
@@ -12,12 +13,24 @@ recipes = Blueprint("recipes", __name__)
 def new_recipe():
     """route for creating a new recipe"""
     form = NewRecipe()
-    title = form.title.data
-    ingredients = form.ingredients.data + request.form.getlist('ingredients[]')
-    instructions = form.instructions.data + request.form.getlist('instructions[]')
-
+    
     if form.validate_on_submit():
-        new_recipe = Recipe(title=title, ingredients=ingredients, instructions=instructions, user=current_user)
+        title = form.title.data
+        ingredients = form.ingredients.data + request.form.getlist('ingredients[]')
+        instructions = form.instructions.data + request.form.getlist('instructions[]')
+
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data, "recipe_pics", (300, 300))
+        else:
+            picture_file = ""
+
+        new_recipe = Recipe(
+            title=title,
+            ingredients=ingredients,
+            instructions=instructions,
+            user=current_user,
+            recipe_pic=picture_file
+        )
         db.session.add(new_recipe)
         db.session.commit()
         flash(
@@ -48,6 +61,10 @@ def update_recipe(recipe_id):
     form = NewRecipe()
 
     if form.validate_on_submit():
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data, "recipe_pics", (300, 300))
+            recipe.recipe_pic = picture_file
+
         recipe.title = form.title.data
         recipe.ingredients = form.ingredients.data + request.form.getlist('ingredients[]')
         recipe.instructions = form.instructions.data + request.form.getlist('instructions[]')

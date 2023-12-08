@@ -3,6 +3,9 @@
 	<article class="media content-section">
 		<div class="media-body">
 			<h2 class="article-title">{{ recipe.title }}</h2>
+			{% if recipe.recipe_pic %}
+				<img class="recipe-img" src="{{ url_for('static', filename='images/recipe_pics/' + recipe.recipe_pic) }}">
+			{% endif %}
 
 			<div class="article-metadata">
 				Posted by <a class="mr-2" href="{{ url_for('users.user', user_id=recipe.user_id) }}">{{ recipe.user.fullname }}</a> on 

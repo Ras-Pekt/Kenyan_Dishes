@@ -6,6 +6,9 @@ from flask_login import UserMixin
 from itsdangerous import URLSafeTimedSerializer as Serializer
 import uuid
 
+def generate_id():
+    return str(uuid.uuid4())
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -15,9 +18,10 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 class User(db.Model, UserMixin):
-    id = db.Column(db.String, primary_key=True, default=str(uuid.uuid4()))
+    id = db.Column(db.String, primary_key=True, default=generate_id)
     fullname = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
+    prof_pic = db.Column(db.String(20), nullable=False, default="default.jpg")
     password = db.Column(db.String(60), nullable=False)
     recipies = db.relationship("Recipe", backref="user", lazy=True)
 

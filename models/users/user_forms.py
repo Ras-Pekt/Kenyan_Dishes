@@ -1,5 +1,7 @@
 #!/usr/bin/python3
+from flask_login import current_user
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from models.user import User
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
@@ -76,6 +78,42 @@ class LogIn(FlaskForm):
     remember = BooleanField("Remember Me")
 
     submit = SubmitField("Log In")
+
+
+class UpdateAccount(FlaskForm):
+    """
+    Update user details class/form
+    """
+    email = StringField(
+        "Email",
+        validators=[
+            DataRequired(),
+            Email()
+        ]
+    )
+
+    picture = FileField(
+        "Update Profile Picture",
+        validators=[
+            FileAllowed([
+                "jpg",
+                "jpeg",
+                "png",
+            ])
+        ]
+    )
+
+    submit = SubmitField("Update")
+
+
+    def validate_email(self, email):
+        """
+        checks if the email already exists in the database
+        """
+        if email.data != current_user.email:
+            existing_email = User.query.filter_by(email=email.data).first()
+            if existing_email:
+                raise ValidationError("This email already has an account associated with it")
 
 
 class RequestPasswordReset(FlaskForm):
