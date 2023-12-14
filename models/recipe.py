@@ -14,7 +14,7 @@ class Recipe(db.Model):
     ingredients = db.Column(db.JSON, nullable=False)
     instructions = db.Column(db.JSON, nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    user_id = db.Column(db.String, db.ForeignKey("user.id"), nullable=False)
 
     @property
     def formatted_date(self):
