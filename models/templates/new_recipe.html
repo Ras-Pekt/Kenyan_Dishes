@@ -37,7 +37,7 @@
 						{% endfor %}
 					{% endif %}
 				</div>
-				<button class="btn btn-outline-info mt-2" type="button" id="add-ingredient">Add Another Ingredient</button>
+				<button class="btn btn-outline-secondary mt-2" type="button" id="add-ingredient">Add Another Ingredient</button>
 
 				<div class="form-group mt-2" id="instructions-container">
 					{{ form.instructions.label(class="form-control-label")}}
@@ -55,7 +55,7 @@
 						{% endfor %}
 					{% endif %}
 				</div>
-				<button class="btn btn-outline-info mt-2" type="button" id="add-instruction">Add Another Instruction</button>
+				<button class="btn btn-outline-secondary mt-2" type="button" id="add-instruction">Add Another Instruction</button>
 				<div class="form-group mt-2">
 					{{ form.picture.label()}} <br>
 					{{ form.picture(class="form-control-file custom-btn")}}
@@ -67,7 +67,7 @@
 				</div>
 			</fieldset>
 			<div class="form-group mt-2">
-				{{ form.submit(class="btn btn-outline-info")}}
+				{{ form.submit(class="btn btn-outline-secondary")}}
 			</div>
 		</form>
 	</div>

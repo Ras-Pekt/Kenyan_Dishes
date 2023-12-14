@@ -1,43 +1,71 @@
 {% extends "layout_template.html" %}
 {% block content %}
-
-	{% if posts %}
-	<div id="carouselExample" class="carousel slide mb-4" data-bs-ride="carousel" data-interval="2000">
-		<div class="carousel-inner">
-			{% for i in range(len) %}
-				<div class="carousel-item {% if loop.index == 1 %} active {% endif %}">
-					<img src="{{ url_for('static', filename='images/food_' + i|string + '.jpg') }}" class="d-block w-100 full-height" alt="">
-					<div class="carousel-caption d-none d-md-block">
-						<h5><a href="{{ url_for('recipes.recipe', recipe_id=posts[i].id) }}">{{ posts[i].title }}</a></h5>					
-					</div>
-				</div>
-			{% endfor %}
+<div class="homepage-container">
+	<section class="homepage">
+		<div class="overlay">
+			<p style="font-size: 75px;">Kenyan Dishes</p>
 		</div>
-		<button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-			<span class="visually-hidden">Previous</span>
-		</button>
-		<button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-			<span class="carousel-control-next-icon" aria-hidden="true"></span>
-			<span class="visually-hidden">Next</span>
-		</button>
-	</div>
-	{% endif %}
+	</section>
+	
+	<div class="header-container">
+		<h1>Explore the rich flavors of Kenyan cuisine</h1>
 
-	{% for post in posts %}
-	<article class="media content-section">
-		<div class="media-body">
-			<h2><a href="{{ url_for('recipes.recipe', recipe_id=post.id) }}">{{ post.title }}</a></h2>
-			{% if post.recipe_pic %}
-				<img class="recipe-img" src="{{ url_for('static', filename='images/recipe_pics/' + post.recipe_pic) }}">
-			{% endif %}
+		<p  style="font-size: larger;">Welcome to our culinary hub, where Kenyan and African cuisine comes alive. We celebrate diverse cultures and traditions through our recipes, from the savory Nyama Choma and Ugali to the tangy Sour Milk. Whether you're a seasoned chef or a culinary novice, we've got something for everyone. Share your own recipes, discover new ones, and let's create a global community of food lovers who appreciate the richness and diversity of African cuisine. So, are you ready for this culinary adventure?</p>
+		
+		<button class="btn btn-outline-secondary"><a href="{{ url_for('main.recipes') }}"> Let's get cooking!</a></button>
+	</div>	
 
+	<section class="features">
+		<!-- Feature 1 -->
+		<div class="feature">
+			<div id="carouselExample" class="carousel slide mb-4" data-bs-ride="carousel" data-interval="10" style="width: 40%; height: 400px;">
+				<div class="carousel-inner">
+					{% for i in range(5) %}
+						<div class="carousel-item {% if loop.index == 1 %} active {% endif %}">
+							<img src="{{ url_for('static', filename='images/carousel/food_' + i|string + '.jpg') }}" alt="">
+						</div>
+					{% endfor %}
+				</div>
+			</div>
 
-			<div class="article-metadata">
-				Posted by <a class="mr-2" href="{{ url_for('users.user', user_id=post.user_id) }}">{{ post.user.fullname }}</a> on 
-				<small class="text-muted">{{ post.formatted_date }}</small>
+			<div class="content">
+				<h2>Recipe Collection</h2>
+				<p><a href="{{ url_for('main.recipes') }}">Browse</a> a variety of Kenyan recipes with step-by-step instructions.</p>
 			</div>
 		</div>
-	</article>
-	{% endfor %}
+		<!-- Feature 2 -->
+		<div class="feature">
+			<div class="content">
+				<h2>User Accounts</h2>
+				<p><a href="{{ url_for('users.register') }}">Create an account</a> to add and share your own favorite recipes.</p>
+			</div>
+			<img src="{{ url_for('static', filename='images/features/user_accounts.jpeg') }}" alt="">
+		</div>
+		<!-- Feature 3 -->
+		<div class="feature">
+			<img src="{{ url_for('static', filename='images/features/community_interactions.jpg') }}" alt="">
+			<div class="content">
+				<h2>Community Interaction</h2>
+				<p>Connect with other food enthusiasts, share tips, and discuss Kenyan and African cuisine.</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="about">
+		<div class="container">
+			<h2>About Kenyan Dishes</h2>
+			
+			<p>Welcome to <a href="{{ url_for('main.home') }}">Kenyan Dishes</a>, where culinary passion meets a celebration of Kenyan and African flavors! My journey began with the realization that the rich tapestry of regional dishes in Kenya and Africa as a whole deserved a global stage. <a href="{{ url_for('main.home') }}">Kenyan Dishes</a> is not just a project; it's a personal mission to bridge culinary borders. I noticed a gap in accessible food knowledge, inspiring me to create a space where every corner of Kenya and Africa can share their unique recipes effortlessly. As a Portfolio Project for <a href="https://www.alxafrica.com/">ALX Africa's</a> Software Engineering program, <a href="{{ url_for('main.home') }}">Kenyan Dishes</a> is more than a website; it's a tribute to innovation, growth, and community building. Join us in turning every meal into a shared memory and savoring the taste of unity, one recipe at a time!</p>
+			
+			<h1>Contacts</h1>
+			<ul class="team">
+				<li><a href="https://www.linkedin.com/in/wanjang-i-gituku-81410572/" target="_blank"><img src="{{ url_for('static', filename='images/icons/linkedin.png') }}" alt=""></a></li>
+				<li><a href="https://github.com/Ras-Pekt" target="_blank"><img src="{{ url_for('static', filename='images/icons/github.png') }}" alt=""></a></li>
+				<li><a href="https://twitter.com/WanjangiG" target="_blank"><img src="{{ url_for('static', filename='images/icons/twitter.png') }}" alt=""></a></li>
+				<li><a href="mailto:wanjangi.gituku@gmail.com" target="_blank"><img src="{{ url_for('static', filename='images/icons/gmail.png') }}" alt=""></a></li>
+			</ul>
+			<p>Find the project on GitHub: <a href="https://github.com/Ras-Pekt/Kenyan_Dishes">Kenyan Dishes Repository</a></p>
+		</div>
+	</section>
+</div>
 {% endblock content %}

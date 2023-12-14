@@ -1,58 +1,62 @@
 body {
-	background: #e5e5e9;
-	color: #333333;
-	margin-top: 5rem;
+	background-color: #c9bcb2;
+	color: #000000;
+	font-family: Arial, sans-serif;
+	margin-top: 4rem;
 }
 
 h1, h2, h3, h4, h5, h6, a {
-	/* color: #444444; */
-	/* color: #167607; */
-	color: #0c3b2e;
-	
+	color: #2B114B;	
+}
+
+p {
+	color: #2B114B;
 }
 
 .bg-steel {
-	/* background-color: #5f788a; */
-	/* background-color: #167607; */
-	background-color: #0c3b2e;
+	background-color: #c5a48b;
+}
+
+.navbar-brand {
+	color: #2B114B;
 }
 
 .site-header .navbar-nav .nav-link {
-	/* color: #cbd5db; */
-	color: #ECFFDC;;
+	color: #2B114B;
 }
 
-.site-header .navbar-nav .nav-link:hover {
-	color: #ffffff;
-	
+.site-header .navbar-nav {
+	color: #2B114B;
 }
+
+.site-header a.navbar-brand:hover,
+.site-header a.nav-item.nav-link:hover {
+    color: #fff;
+}
+
 
 .site-header .navbar-nav .nav-link.active {
 	font-weight: 500;
 }
 
 .content-section {
-	background: #fcfcf7;
+	background: #c5a48b;
 	padding: 10px 20px;
-	/* border: 1px solid #dddddd; */
-	border: 1px solid #0c3b2e;
-	border-radius: 3px;
 	margin-bottom: 20px;
+	box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
 
 .article-title {
-	color: #444444;
+	color: #2B114B;
 }
 
 a.article-title:hover {
-	/* color: #428bca; */
-	/* color: #167607; */
-	color: #ffffff;
+	color: #112A46;
 	text-decoration: none;
 }
 
 a:hover {
-	color: #444444;
+	color: #112A46;
 }
 
 .article-content {
@@ -68,12 +72,11 @@ a:hover {
 .article-metadata {
 	padding-bottom: 1px;
 	margin-bottom: 4px;
-	/* border-bottom: 1px solid #e3e3e3 */
-	border-bottom: 1px solid #0c3b2e;;
+	border-bottom: 1px solid #112A46;
 }
 
 .article-metadata a:hover {
-	color: #333;
+	color: #112A46;
 	text-decoration: none;
 }
 
@@ -106,25 +109,107 @@ a:hover {
     font-size: 12px;
 }
 
-#carouselExample {
-    height: 400px; /* Set a fixed height for the carousel */
+ .recipe-grid {
+	display: grid;
+	margin-top: 15px;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 20px;
+ }
+ 
+ .recipe-card {
+	padding: 20px;
+	box-shadow: 0 0 10px rgba(0,0,0,0.1);
+	transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-out;
   }
-
-.carousel-inner {
-    height: 100%; /* Make the carousel-inner fill the entire height of the carousel */
+  
+  .recipe-card:hover {
+	box-shadow: 0 0 20px rgba(0,0,0,0.3);
+	transform: translateY(-10px);
   }
-
-.carousel-item {
-    height: 100%; /* Make the carousel items fill the entire height of the carousel-inner */
-  }
-
-.carousel-item img {
-    width: 100%; /* Make the images fill the entire width of the carousel items */
-    height: 100%; /* Make the images fill the entire height of the carousel items */
-    object-fit: cover; /* Ensure the entire image is covered without distortion */
+  
+  .homepage-container {
+	height: 100vh;
+	position: relative;
+ }
+ 
+ .homepage {
+	height: 100vh;
+	width: 100%;
+	background-image: url('cover.jpeg');
+	background-size: cover;
+	background-position: center;
+	background-attachment: fixed;
+	position: relative;
+	z-index: -1;
+   }
+   
+   .overlay {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	padding: 20px;
+ }
+ 
+   
+.recipe-grid {
+	position: relative;
 }
 
-.carousel-inner img {
-    height: 400px; /* Set the height to the desired value */
-    width: auto; /* Maintain the aspect ratio */
+
+.features {
+    background-color: #f9f9f9;
+    padding: 40px 0;
+}
+
+.feature {
+	display: flex;
+	justify-content: center;
+	gap: 20px;
+	text-align: center;
+	margin: 20px;
+	padding: 20px;
+	box-shadow: 0 0 10px rgba(0,0,0,0.1);
+	transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-out;
+	border-radius: 15px;
  }
+
+.feature:hover {
+	box-shadow: 0 0 20px rgba(0,0,0,0.3);
+	transform: translateY(-10px);
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.about {
+    text-align: center;
+    padding: 40px 0;
+}
+
+.team {
+    list-style: none;
+    padding: 0;
+}
+
+.team li {
+    display: inline;
+    margin-right: 10px;
+}
+
+.content {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+   }
+
+.carousel-inner img {
+    height: 400px;
+    width: auto;
+ }
+ 

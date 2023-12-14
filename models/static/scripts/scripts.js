@@ -42,4 +42,3 @@ function showForm() {
   document.getElementById('formContainer').style.display = 'block';
   document.getElementById('buttonContainer').style.display = 'none';
 }
-

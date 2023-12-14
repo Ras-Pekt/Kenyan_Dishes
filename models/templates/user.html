@@ -1,21 +1,26 @@
 {% extends "layout_template.html" %}
-{% block content %}	
+{% block content %}
 	<article class="media content-section">
-		<div class="media-body">
-			<div class="article-metadata p-3 mb-2">
-				<img class="rounded-circle account-img" src="{{ url_for('static', filename='images/profile_pics/' + user.prof_pic) }}">
-				<h2> Recipes by {{ user.fullname }}</h2>
-			</div>
-
-			{% for recipe in user.recipies %}
-				<div class="article-metadata">
-					<h3><a href="{{ url_for('recipes.recipe', recipe_id=recipe.id) }}">{{ recipe.title }}</a></h3>
-					{% if recipe.recipe_pic %}
-						<img class="recipe-img" src="{{ url_for('static', filename='images/recipe_pics/' + recipe.recipe_pic) }}">
-					{% endif %}
-					Posted on <small class="text-muted">{{ recipe.formatted_date }}</small>
-				</div>
-			{% endfor %}
+		<div class="article-metadata p-3 mb-2">
+			<img class="rounded-circle account-img" src="{{ url_for('static', filename='images/profile_pics/' + user.prof_pic) }}">
+			<h2> Recipes by {{ user.fullname }}</h2>
 		</div>
 	</article>
+
+	<div class="recipe-grid">
+		{% for recipe in user.recipies %}
+			<div class="recipe-card">
+				<h2><a href="{{ url_for('recipes.recipe', recipe_id=recipe.id) }}">{{ recipe.title }}</a></h2>
+				{% if recipe.recipe_pic %}
+				<a href="{{ url_for('recipes.recipe', recipe_id=recipe.id) }}"><img class="recipe-img" src="{{ url_for('static', filename='images/recipe_pics/' + recipe.recipe_pic) }}"></a>
+				{% endif %}
+
+
+				<div class="article-metadata">
+					Posted by <a class="mr-2" href="{{ url_for('users.user', user_id=recipe.user_id) }}">{{ recipe.user.fullname }}</a> on 
+					<small class="text-muted">{{ recipe.formatted_date }}</small>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
 {% endblock content %}

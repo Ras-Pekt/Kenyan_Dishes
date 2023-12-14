@@ -1,0 +1,28 @@
+{% extends "layout_template.html" %}
+{% block content %}
+<div class="homepage-container">
+	<section class="homepage">
+		<div class="overlay">
+			<h1>Kenyan Dishes</h1>
+			<p style="font-size: xx-large; color: goldenrod;">Where Kenyan and African cuisine comes alive!</p>
+		</div>
+	</section>
+
+	<div class="recipe-grid">
+		{% for post in posts %}
+			<div class="recipe-card">
+				<h2><a href="{{ url_for('recipes.recipe', recipe_id=post.id) }}">{{ post.title }}</a></h2>
+				{% if post.recipe_pic %}
+				<a href="{{ url_for('recipes.recipe', recipe_id=post.id) }}"><img class="recipe-img" src="{{ url_for('static', filename='images/recipe_pics/' + post.recipe_pic) }}"></a>
+				{% endif %}
+
+
+				<div class="article-metadata">
+					Posted by <a class="mr-2" href="{{ url_for('users.user', user_id=post.user_id) }}">{{ post.user.fullname }}</a> on 
+					<small class="text-muted">{{ post.formatted_date }}</small>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+</div>
+{% endblock content %}
