@@ -23,5 +23,5 @@ def search():
     """search functionality route"""
     search_term = request.args.get("search")
 
-    recipes = Recipe.query.filter(Recipe.title.like(f"%{search_term}%")).all()
+    recipes = Recipe.query.filter(Recipe.title.ilike(f"%{search_term}%")).all()
     return render_template("search_results.html", title="Search Results", recipes=recipes)
