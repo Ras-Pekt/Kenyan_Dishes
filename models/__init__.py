@@ -6,6 +6,7 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
+from flask_talisman import Talisman
 from models.config import Config
 
 db = SQLAlchemy()
@@ -14,7 +15,7 @@ login_manager = LoginManager()
 login_manager.login_view = "users.login"
 login_manager.login_message_category = "info"
 mail = Mail()
-
+talisman = Talisman()
 
 def create_app(config=Config):
     """creates an instance of the app"""
@@ -26,6 +27,7 @@ def create_app(config=Config):
     bcrypt.init_app(app)
     login_manager.init_app(app)
     mail.init_app(app)
+    talisman.init_app(app)
 
     from models.users.user_routes import users
     from models.recipes.recipe_routes import recipes
