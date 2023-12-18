@@ -21,7 +21,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.String, primary_key=True, default=generate_id)
     fullname = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
-    prof_pic = db.Column(db.String(20), nullable=False, default="default.jpg")
+    prof_pic = db.Column(db.String, nullable=False, default="default.jpg")
     password = db.Column(db.String(60), nullable=False)
     recipies = db.relationship("Recipe", backref="user", lazy=True)
 

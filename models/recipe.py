@@ -9,8 +9,8 @@ def generate_id():
 
 class Recipe(db.Model):
     id = db.Column(db.String, primary_key=True, default=generate_id)
-    title = db.Column(db.String(100), nullable=False)
-    recipe_pic = db.Column(db.String(20))
+    title = db.Column(db.String, nullable=False)
+    recipe_pic = db.Column(db.String)
     ingredients = db.Column(db.JSON, nullable=False)
     instructions = db.Column(db.JSON, nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -22,4 +22,4 @@ class Recipe(db.Model):
 
     def __repr__(self):
         """remove this in final"""
-        return f"Recipe(ID:{self.id}\nTITLE:{self.title}\nDATE:{self.date_posted}\nINSTRUCTIONS{self.instructions}\nPIC{self.recipe_pic})"
+        return f"Recipe({self.id}, {self.title}, {self.date_posted})"
